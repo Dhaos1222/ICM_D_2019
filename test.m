@@ -1,7 +1,7 @@
 floorN = 1;
 W = 480;
 L = 533;
-peopleNum = 1;
+peopleNum = 10;
 Louvre = zeros(W,L,floorN);
 
 
@@ -28,19 +28,21 @@ Louvre = initStairs(Louvre,stairs);
 prob = initProb(phes,exit,stairs);
 
 [Louvre,peoples] = initPeople(Louvre,peopleNum);%peoples is the start of people location
-
+%peoples save the start point of people
 
 
 for i = 1:floorN
 h = show_plaza(Louvre(:,:,i),NaN,0.01);
 end
 
+%peoplesT save peoples location in running program
 peoplesT = peoples;
-for i = 1:5000
+
+for i = 1:1500
     num = peopleNum;
     peoplesTemp = peoplesT;
     for j = 1:num
-        [x,y,z,peoplesTemp,peopleRow] = getPeople(peoples);
+        [x,y,z,peoplesTemp,peopleRow] = getPeople(peoplesTemp);
         [dx,dy,dz] = getMovePoint(prob,x,y,z);
         [Louvre,peopleNum,peoplesT] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peoplesT,peopleRow);
     end
@@ -48,9 +50,7 @@ for i = 1:5000
         break;
     end
 
-    for n = 1:floorN
-        h = show_plaza(Louvre(:,:,n),h,0.5);
-    end
+    h = show_plaza(Louvre(:,:,1),h,0.5);
     
 end
 

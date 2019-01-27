@@ -20,7 +20,10 @@ for z = 1:D
                 end
             end
             neighbour = neighbour - (phes(x,y,z)^apha*yita^beta);
-            prob(x,y,z) = (phes(x,y,z)^apha*yita^beta)/neighbour;
+            prob(x,y,z) = 100*((phes(x,y,z)^apha*yita^beta)/neighbour);
+            if yita == 2
+                prob(x,y,z) = prob(x,y,z)/100;
+            end
         end
     end
 end
@@ -48,6 +51,7 @@ end
 function yita = getYita(d,x,y,z,exit,stairs)
 dmin = minDist2Exit(x,y,z,exit,stairs);
 if dmin == 0
-    dmin = 0.05;
+    yita = 2;
+else
+    yita = 1/d * 1/dmin;
 end
-yita = 1/d * 1/dmin;

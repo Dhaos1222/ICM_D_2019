@@ -1,8 +1,8 @@
 function prob = initProb(phes,exit,stairs)
 prob = phes;
 d = 1;%distance of neighbour
-apha = 1;
-beta = 1;
+apha = 2;
+beta = 2;
 
 % [i,j,z] = ind2sub(size(prob),find(prob==1));
 % I = [i j z];

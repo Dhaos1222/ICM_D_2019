@@ -4,5 +4,5 @@ n = floor(W*rand())+1;
 x = peoples(n,1);
 y = peoples(n,2);
 z = peoples(n,3);
-peopleRow = n;
 peoples(n,:) = [];
+peopleRow = n;
