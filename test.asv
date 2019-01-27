@@ -1,7 +1,7 @@
-floorN = 1;
+floorN = 5;
 W = 480;
 L = 533;
-peopleNum = 1;
+peopleNum = 3000;
 Louvre = zeros(W,L,floorN);
 
 
@@ -11,53 +11,26 @@ Louvre(:,:,i) = louvre;
 end
 
 %exitList
-load('exitFirst.mat');
+load('exit.mat');
 % [r,c] = size(exit);
 % w = ones(r,1);
 % exit = [exit w];
 %  exit(:,end) = 4;
-% exitF = exit(:,3);
 
 %stairsList
-load('stairsTest.mat');
+load('stairs.mat');
 
 Louvre = initExit(Louvre,exit);
 Louvre = initStairs(Louvre,stairs);
 
 [phes,phesAdd] = initPhes(Louvre);%initPheromones = 1
-prob = initProb(phes,exit,stairs);
 
 [Louvre,peoples] = initPeople(Louvre,peopleNum);%peoples is the start of people location
-
-
 
 for i = 1:floorN
 h = show_plaza(Louvre(:,:,i),NaN,0.01);
 end
 
-peoplesT = peoples;
-for i = 1:5000
-    num = peopleNum;
-    peoplesTemp = peoplesT;
-    for j = 1:num
-        [x,y,z,peoplesTemp,peopleRow] = getPeople(peoples);
-        [dx,dy,dz] = getMovePoint(prob,x,y,z);
-        [Louvre,peopleNum,peoplesT] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peoplesT,peopleRow);
-    end
-    if peopleNum == 0
-        break;
-    end
-
-    for n = 1:floorN
-        h = show_plaza(Louvre(:,:,n),h,0.5);
-    end
-    
-end
-
-
-
-    
-            
 
 
 
@@ -82,12 +55,12 @@ for n = 1:iterations
 %     Louvre = initStairs(Louvre,stairs);
 %     Louvre = initPeople(Louvre,num);
     
-%     for i = 1:1000
-%         temp = peoples;
-%         j = 0;
-%         while j<num
-%             [x,y,z,temp] = getPeople(temp);
-%             
+    for i = 1:1000
+        temp = peoples;
+        j = 0;
+        while j<num
+            [x,y,z,temp] = getPeople(temp);
+            
             %judge
             
             %
