@@ -1,5 +1,5 @@
 function [dx,dy,dz] = getMovePoint(pros,x,y,z)
-min = 9999999;
+min = 999999;
 for i = -1:1
     for j = -1:1
         if pros(x+i,y+j,z)<min
