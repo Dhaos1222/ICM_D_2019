@@ -1,5 +1,17 @@
-function h = show_plaza(plaza, B, h)
-[L, W] = size(plaza); %get its dimensions
+function h = show_plaza(plaza, h, n)
+%
+% show_plaza  To show the plaza matrix as a image
+% 
+% USAGE: h = show_plaza(plaza, h, n)
+%        plaza = plaza matrix
+%                1 = car, 0 = empty, -1 = forbid, -3 = empty&booth
+%        h = handle of the graphics
+%        n = pause time
+%
+% zhou lvwen: zhou.lv.wen@gmail.com
+
+
+[W, L] = size(plaza); %get its dimensions
 temp = plaza;
 temp(temp==1) = 0;
 
@@ -8,31 +20,27 @@ PLAZA(:,:,2) = plaza;
 PLAZA(:,:,3) = temp;
 
 PLAZA = 1-PLAZA;
-PLAZA(PLAZA>=888)=0.3;
+PLAZA(PLAZA>1)=PLAZA(PLAZA>1)/6;
 
-for i = (L+1)/2
-    for j = ceil(W/2)-ceil(B/2)+1:ceil(W/2)+floor(B/2)
-        if plaza(i,j) == 0;
-            PLAZA(i,j,1) =0;
-            PLAZA(i,j,2) =1;
-            PLAZA(i,j,3) =0;
-        else
-            PLAZA(i,j,1) =1;
-            PLAZA(i,j,2) =0;
-            PLAZA(i,j,3) =0;
-        end
-    end
-end
 
 if ishandle(h)
     set(h,'CData',PLAZA)
+    pause(n)
 else
-    figure('position',[20,50,200,700])
-    h = imagesc(PLAZA);    
-    hold on
-    plot([[0:W]',[0:W]']+0.5,[0,L]+0.5,'k')
-    plot([0,W]+0.5,[[0:L]',[0:L]']+0.5,'k')
+    figure('position',[20,20,1080,960])
+    h = imagesc(PLAZA);
+%     colormap(bone(128));
+%     h = imagesc(plaza,[-1 100]);
+    hold on;
+    
+    % draw the grid
+    for i = 0:1:W
+    plot([0,L],[i,i],'k-')
+    end
+    for i = 0:1:L
+    plot([i,i],[0,W],'k-')
+    end
     axis image
-    set(gca,'xtick',[]);
-    set(gca,'ytick',[]);
+%     set(gca, 'xtick', [], 'ytick', []);
+    pause(n)
 end

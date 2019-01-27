@@ -1,0 +1,11 @@
+function [louvre] = init(louvre, num ,W ,L)
+for i = 1:num
+    [x,y] = getPoint();
+    
+
+
+
+
+function [x,y] = getPoint()
+x = L*rand();
+y = L*rand();
