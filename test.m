@@ -5,7 +5,7 @@ W = 480;
 L = 533;
 peopleNum = 200;
 threshold = 0;
-iterations = 2;
+iterations = 200;
 delta = 0.7;
 time = 50000;
 result = zeros(iterations+1,1);
@@ -178,7 +178,7 @@ for p = 1:iterations
     end
     
     timeCost = i;
-    str = strcat('cost time = ', num2str(timeCost));
+    str = strcat('cost time = ', num2str(timeCost),'  iteration ',num2str(p));
     sprintf('%s',str)
     result(p+1,1) = timeCost;
     end
@@ -197,7 +197,12 @@ for p = 1:iterations
         prob(exit(n,1),exit(n,2),exit(n,3)) = prob(exit(n,1),exit(n,2),exit(n,3))*100;
     end
     prob = initProb(phes,exit,stairs);
-
+    
+    if(result(p,1)-result(p+1,1)<1e-4)
+        str = strcat('iterations = ', num2str(p));
+        sprintf('%s',str)
+        break;
+    end
 end
 
 
