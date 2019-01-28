@@ -1,12 +1,21 @@
-function [Louvre,peopleNum,peopleT,flag,people] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peopleT,peopleRow,people)
-if Louvre(dx,dy,dz)==1||Louvre(dx,dy,dz)==-1
+function [Louvre,peopleNum,peopleT,flag,people,it,phesAdd] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peopleT,peopleRow,people,it,phesAdd)
+if Louvre(dx,dy,dz)==1
 %     str = string('wait');
 %     sprintf('%s',str)
     flag = 0;
 %     myname = 920;
+elseif Louvre(dx,dy,dz)==-1
+    m = floor(3*rand())-1;
+    n = floor(3*rand())-1;
+    dx = dx+m;
+    dy = dy+n;
+    [Louvre,peopleNum,peopleT,flag,people,it,phesAdd] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peopleT,peopleRow,people,it,phesAdd);
 elseif Louvre(dx,dy,dz)==0
     Louvre(dx,dy,dz) = 1;
     Louvre(x,y,z) = 0;
+    if(it==1)
+        phesAdd(dx,dy,dz) = phesAdd(dx,dy,dz)+1/people(peopleRow,4);
+    end
     peopleT(peopleRow,1:3) = [dx,dy,dz];
     peopleT(peopleRow,4) = peopleT(peopleRow,4)+1;
     flag = 0;
@@ -16,6 +25,9 @@ elseif Louvre(dx,dy,dz)==2
 %     else
         Louvre(x,y,z-1)=1;
         Louvre(x,y,z)=0;
+        if(it==1)
+            phesAdd(dx,dy,dz) = phesAdd(dx,dy,dz)+1/people(peopleRow,4);
+        end
         peopleT(peopleRow,1:3) = [x,y,z-1];
         peopleT(peopleRow,4) = peopleT(peopleRow,4)+1;
         flag = 0;
@@ -23,6 +35,9 @@ elseif Louvre(dx,dy,dz)==2
 elseif Louvre(dx,dy,dz)==3
     peopleNum = peopleNum - 1;
     Louvre(x,y,z) = 0;
+    if(it==1)
+        phesAdd(dx,dy,dz) = phesAdd(dx,dy,dz)+1/people(peopleRow,4);
+    end
     flag = peopleT(peopleRow,4);
     people(peopleRow,4) = peopleT(peopleRow,4);
     peopleT(peopleRow,:) = [];

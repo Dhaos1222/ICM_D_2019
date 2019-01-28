@@ -3,7 +3,7 @@ clear;
 floorN = 5;
 W = 480;
 L = 533;
-peopleNum = 200;
+peopleNum = 1;
 Louvre = zeros(W,L,floorN);
 
 
@@ -42,6 +42,7 @@ end
 %peoplesT save peoples location in running program
 peoplesT = peoples;
 num = peopleNum;
+it = 0;
 for i = 1:1000
 
 %     peoplesTemp = peoplesT;    
@@ -51,11 +52,9 @@ x = peoplesT(j,1);
 y = peoplesT(j,2);
 z = peoplesT(j,3);
         [dx,dy,dz] = getMovePoint(prob,x,y,z);
-        [Louvre,num,peoplesT,flag,peoples] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples);
+        [Louvre,num,peoplesT,flag,peoples,it,phesAdd] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples,it,phesAdd);
         if flag == 0
             j = j+1;
-        else
-            
         end
     end
 
@@ -66,7 +65,6 @@ z = peoplesT(j,3);
     if num < peopleNum/10
         break;
     end
-    
     str = strcat('cost time = ', num2str(timeCost));
     sprintf('%s',str)
 end
@@ -76,61 +74,49 @@ for i = 1:floorN
     xlabel(strcat('cost time = ', num2str(timeCost)));
 end
 
-    
-            
-
-
-
+if(0)
 iterations = 1;
-for n = 1:iterations
+it = 1;
+for p = 1:iterations
     % introduce people
     num = peopleNum;
-    
     %new Louvre
+    Louvre = resetPeople(Louvre,peoples);
+    peoplesT = peoples;
+    peoplesT(:,4) = 0;
     
-    % BUG!
-%     if n>1
-% %     for i = 1:floorN
-% %     louvre = create_louvre(L,W,i);
-% %     Louvre(:,:,i) = louvre;
-%     for i = 1:peopleNum
-%         Louvre(peoples(i,1),peoples(i,2),peoples(i,3)) = 0;
-%     end
-%     end
+for i = 1:1000
+%     peoplesTemp = peoplesT;    
+    j = 1;
+    while j <= num
+x = peoplesT(j,1);
+y = peoplesT(j,2);
+z = peoplesT(j,3);
+        [dx,dy,dz] = getMovePoint(prob,x,y,z);
+        [Louvre,num,peoplesT,flag,peoples,it,phesAdd] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples,it,phesAdd);
+        if flag == 0
+            j = j+1;
+        end
+    end
 
-%     Louvre = initExit(Louvre,exit);
-%     Louvre = initStairs(Louvre,stairs);
-%     Louvre = initPeople(Louvre,num);
+    for n = 1:floorN
+        h(n) = show_plaza(Louvre(:,:,n),h(n),0.05);
+    end
+    timeCost = i;
+    if num < peopleNum/10
+        break;
+    end
+    str = strcat('cost time = ', num2str(timeCost));
+    sprintf('%s',str)
+end
     
-%     for i = 1:1000
-%         temp = peoples;
-%         j = 0;
-%         while j<num
-%             [x,y,z,temp] = getPeople(temp);
-%             
-            %judge
-            
-            %
-            
-            
-%     for i = 1:floorN
-%         h = show_plaza(Louvre(:,:,i),h,0.02);
-%     end
     
+    str = string('finished!');
+    sprintf('%s',str)
 
-%     % update rules for lanes
-%     [plaza, v, time] = switch_lanes(plaza, v, time); % lane changes
-%     [plaza, v, time] = move_forward(plaza, v, time, vmax); % move cars forward
-%     [plaza, v, time, departurescount, departurestime] = clear_boundary(plaza, v, time);
-%     
-%     % flux calculations
-%     influx(i) = arrivalscount;
-%     outflux(i) = departurescount;
-%     timecost = [timecost, departurestime];
 end
 
-
-
+end
 
 
 

@@ -6,7 +6,8 @@ for k=found'
     phes(k) = 1;
     phesAdd(k) = 0;
 end
-found = find(phes==-1);
-for k=found'
-    phes(k) = 0;
-end
+
+% found = find(phes==-1);
+% for k=found'
+%     phes(k) = 0;
+% end
