@@ -1,15 +1,20 @@
+% add extra exits
 clear;
+
+addNum = 3;
 
 floorN = 5;
 W = 480;
 L = 533;
-peopleNum = 10;
+peopleNum = 500;
 threshold = 0;
-iterations = 0;
+iterations = 25;
 delta = 0.7;
 time = 50000;
 result = zeros(iterations+1,1);
 Louvre = zeros(W,L,floorN);
+
+secondCondition = 1;
 
 showAnimation = 0;
 
@@ -21,15 +26,20 @@ end
 %exitList
 load('exit.mat');
 % load('exitFirst.mat');
-% [r,c] = size(exit);
-% w = ones(r,1);
-% exit = [exit w];
-%  exit(:,end) = 4;
-% exitF = exit(:,3);
-
 %stairsList
 load('stairs.mat');
 % load('stairsTest.mat');
+
+if(secondCondition)
+    for j = 1:addNum
+[x,y,z] = getPoint(W,L,floorN);
+while(Louvre(x,y,z)~= 0)
+    [x,y,z] = getPoint(W,L,floorN);
+end
+Lovre(x,y,z) = 3;
+exit=[exit;x,y,z];
+    end
+end
 
 Louvre = initExit(Louvre,exit);
 Louvre = initStairs(Louvre,stairs);
@@ -70,11 +80,12 @@ z = peoplesT(j,3);
                 if(giveup(j,1)>=10)
                     peoplesT(j,:) = [];
                     giveup(j,:) = [];
-                    x = peoplesT(j,1);
-                    y = peoplesT(j,2);
-                    z = peoplesT(j,3);
+%                     x = peoplesT(j,1);
+%                     y = peoplesT(j,2);
+%                     z = peoplesT(j,3);
                     num = num - 1;
                     Louvre(x,y,z) = 0;
+                    break;
                 end
                 [dx,dy,dz] = getMovePoint2(x,y,z);
                 [Louvre,num,peoplesT,flag,peoples,it,phesAdd,tempSave,giveup] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples,it,phesAdd,tempSave,giveup);
@@ -111,6 +122,7 @@ if(showAnimation)
 end
 
 tempSave = 9999*ones(peopleNum,1);
+
 it = 1;
 
 %  h = show_plaza(Louvre(:,:,1),NaN,0.01);
@@ -119,6 +131,7 @@ for p = 1:iterations
     sprintf('%s',str)
     % introduce people
     num = peopleNum;
+    giveup = zeros(num,1);
     %new Louvre
     
     Louvre = tempLouvre;
@@ -140,10 +153,23 @@ for p = 1:iterations
             j = j+1;
         elseif flag == 2
             while(flag==2)
-                [dx,dy,dz] = getMovePoint2(dx,dy,dz);
-                [Louvre,num,peoplesT,flag,peoples,it,phesAdd,tempSave,giveup] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples,it,phesAdd,tempSave);
+                if(giveup(j,1)>=10)
+                    peoplesT(j,:) = [];
+                    giveup(j,:) = [];
+%                     x = peoplesT(j,1);
+%                     y = peoplesT(j,2);
+%                     z = peoplesT(j,3);
+                    num = num - 1;
+                    Louvre(x,y,z) = 0;
+                    break;
+                end
+                [dx,dy,dz] = getMovePoint2(x,y,z);
+                [Louvre,num,peoplesT,flag,peoples,it,phesAdd,tempSave,giveup] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples,it,phesAdd,tempSave,giveup);
+                giveup(j,1) = giveup(j,1) + 1;
             end
-        else
+            if flag ==0
+                j = j+1;
+            end
         end
     end
     
@@ -162,7 +188,7 @@ for p = 1:iterations
     end
     
     timeCost = i;
-    str = strcat('cost time = ', num2str(timeCost));
+    str = strcat('cost time = ', num2str(timeCost),'  iteration ',num2str(p));
     sprintf('%s',str)
     result(p+1,1) = timeCost;
     end
@@ -181,7 +207,12 @@ for p = 1:iterations
         prob(exit(n,1),exit(n,2),exit(n,3)) = prob(exit(n,1),exit(n,2),exit(n,3))*100;
     end
     prob = initProb(phes,exit,stairs);
-
+    
+%     if(result(p,1)-result(p+1,1)<1e-4)
+%         str = strcat('iterations = ', num2str(p));
+%         sprintf('%s',str)
+%         break;
+%     end
 end
 
 
