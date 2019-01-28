@@ -41,20 +41,21 @@ end
 
 %peoplesT save peoples location in running program
 peoplesT = peoples;
-
+num = peopleNum;
 for i = 1:1000
-    num = peopleNum;
-    peoplesTemp = peoplesT;
-    
+
+%     peoplesTemp = peoplesT;    
     j = 1;
     while j <= num
-x = peoplesTemp(j,1);
-y = peoplesTemp(j,2);
-z = peoplesTemp(j,3);
+x = peoplesT(j,1);
+y = peoplesT(j,2);
+z = peoplesT(j,3);
         [dx,dy,dz] = getMovePoint(prob,x,y,z);
-        [Louvre,num,peoplesT,flag] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j);
+        [Louvre,num,peoplesT,flag,peoples] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j,peoples);
         if flag == 0
             j = j+1;
+        else
+            
         end
     end
 
@@ -62,10 +63,12 @@ z = peoplesTemp(j,3);
         h(n) = show_plaza(Louvre(:,:,n),h(n),0.05);
     end
     timeCost = i;
-    if num == 0
+    if num < peopleNum/10
         break;
     end
     
+    str = strcat('cost time = ', num2str(timeCost));
+    sprintf('%s',str)
 end
 
 for i = 1:floorN

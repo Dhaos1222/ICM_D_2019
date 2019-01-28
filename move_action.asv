@@ -1,7 +1,7 @@
-function [Louvre,peopleNum,peopleT,flag,people] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peopleT,peopleRow,people)
+function [Louvre,peopleNum,peopleT,flag] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peopleT,peopleRow)
 if Louvre(dx,dy,dz)==1||Louvre(dx,dy,dz)==-1
-%     str = string('wait');
-%     sprintf('%s',str)
+    str = string('wait');
+    sprintf('%s',str)
     flag = 0;
 %     myname = 920;
 elseif Louvre(dx,dy,dz)==0
@@ -23,8 +23,7 @@ elseif Louvre(dx,dy,dz)==2
 elseif Louvre(dx,dy,dz)==3
     peopleNum = peopleNum - 1;
     Louvre(x,y,z) = 0;
-    flag = peopleT(peopleRow,4);
-    people(peopleRow,4) = peopleT(peopleRow,4);
     peopleT(peopleRow,:) = [];
+    flag = 1;
 end
             
