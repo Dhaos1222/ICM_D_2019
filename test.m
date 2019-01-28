@@ -42,22 +42,27 @@ end
 %peoplesT save peoples location in running program
 peoplesT = peoples;
 
-for i = 1:100
+for i = 1:1000
     num = peopleNum;
     peoplesTemp = peoplesT;
-    for j = 1:num
+    
+    j = 1;
+    while j <= num
 x = peoplesTemp(j,1);
 y = peoplesTemp(j,2);
 z = peoplesTemp(j,3);
         [dx,dy,dz] = getMovePoint(prob,x,y,z);
-        [Louvre,peopleNum,peoplesT] = move_action(x,y,z,dx,dy,dz,Louvre,peopleNum,peoplesT,j);
+        [Louvre,num,peoplesT,flag] = move_action(x,y,z,dx,dy,dz,Louvre,num,peoplesT,j);
+        if flag == 0
+            j = j+1;
+        end
     end
 
     for n = 1:floorN
         h(n) = show_plaza(Louvre(:,:,n),h(n),0.05);
     end
     timeCost = i;
-    if peopleNum == 0
+    if num == 0
         break;
     end
     
